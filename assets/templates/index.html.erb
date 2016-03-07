@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="https://rawgit.com/MrMufflon/Leaflet.Elevation/master/dist/leaflet.elevation-0.0.4.css" />
     <style type="text/css">
       body { width: 1000px; margin: 0 auto; }
+      #elevation-div { height: 200px; width 100%; }
       .gpx { border: 5px #aaa solid; border-radius: 5px;
         box-shadow: 0 0 3px 3px #ccc;
         width: 1000px; margin: 1em auto; }
@@ -20,6 +21,7 @@
     <section id="demo" class="gpx" data-gpx-source="http://localhost:8081/mckerrow.gpx" data-map-target="demo-map">
       <article>
         <div class="map" id="demo-map"></div>
+	<div id="elevation-div"></div>
       </article>
 
       <footer>
@@ -67,13 +69,13 @@
       var elevation = L.control.elevation({
         position: "topright",
         theme: "steelblue-theme",
-        width: 600,
-        height: 125,
+	width: 970,
+	height:200,
         margins: {
-            top: 10,
-            right: 20,
-            bottom: 30,
-            left: 50
+            top: 20,
+            right: 80,
+            bottom: 20,
+            left: 20
         },
         useHeightIndicator: true, //if false a marker is drawn at map position
         interpolation: "linear", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
@@ -86,7 +88,12 @@
         yTicks: undefined, //number of ticks on y axis, calculated by default according to height
         collapsed: false    //collapsed mode, show chart on click or mouseover
       });
-      elevation.addTo(map);
+      //elevation.addTo(map);
+
+     var elevationContainer = elevation.onAdd(map);
+     elevationContainer.classList.add("leaflet-control");
+     document.getElementById('elevation-div').appendChild(elevationContainer);
+
 
       var gjl = L.geoJson(geojson,{ onEachFeature: function(feature, layer) { elevation.addData.bind(elevation)(feature, layer); } }).addTo(map);
 
